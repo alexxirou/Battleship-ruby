@@ -32,19 +32,24 @@ class Ship
 end
 
 class Grid
-    attr_reader :size_x, :size_y, :misses, :ships
+    attr_reader :size_x, :size_y, :misses, :ships, :sunken_ships
     
 
-    def initialize(size_x, size_y, ships=[], misses=Set[])
+    def initialize(size_x, size_y, ships=Set[], misses=Set[])
         @size_x=size_x
         @size_y=size_y
         @ships=ships
         @misses=misses
+        @sunken_ships = Set[]
     end
     
     def add_ship_to_grid(ship)
-        @ships.push(ship)
+        @ships.add(ship)
     end
+
+    def add_sunken_ship_to_grid(ship)
+        @sunken_ships.add(ship) 
+    end        
 
     def shoot_at_position(shot)
         unless @misses.include?(shot)
@@ -52,7 +57,8 @@ class Grid
                 unless ship.positions.include?(shot)
                     ship_shot_result = ship.shoot_at_ship(shot)
                     @misses.add(shot) if ship_shot_result == 'MISS'
-                    return [ship_shot_result, ship_afloat? ? ship : nil]
+                    add_sunken_ship_to_grid(ship) if ship_shot_result == 'DESTROYED'
+                    return [ship_shot_result, ship_shot_result =='DESTROYED' ? ship : nil]
                 end
             end
         end
@@ -60,31 +66,6 @@ class Grid
     end
 end
 
-class Blind_grid < Grid
-    attr_reader :hits, :sunken_ships
-    def initialize(grid)
-        super(grid.size_x, grid.size_y, [], grid.misses)
-        @hits||=add_hits_to_blind_grid(grid)
-        @sunken_ships||=add_sunken_ships_to_blind_grid(grid)
-    end
-    
-    def add_sunken_ships_to_blind_grid(grid)
-        sunken_ships=Set[]
-        grid.ships.each do |ship|
-                sunken_ships.add(ship) unless ship.ship_afloat?
-        end
-        sunken_ships
-    end         
-
-    def add_hits_to_blind_grid(grid)
-        hits=Set[]
-        grid.ships.each do |ship|
-            ship.hits_received.each{ |hit| hits.add(hit)}
-        end
-        hits
-    end            
-
-end    
 
 
 def load_grid_from_file(file)

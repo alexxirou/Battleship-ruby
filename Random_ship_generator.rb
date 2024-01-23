@@ -49,7 +49,7 @@ def generate_random_positions(ship_position_range)
         ship_random_positions << position.to_s
     end
     ship_random_positions.map! { |position| position.reverse } if ship_orientation_coefficient == 1
-    p ship_random_positions
+    ship_random_positions
     
 
 end
@@ -64,6 +64,3 @@ def generate_random_number_with_exclusions(excluded_numbers, start, limit)
     end while excluded_numbers.include?(random_number)
 random_number
 end
-
-test = random_ship_positions_array
-p test[0]
