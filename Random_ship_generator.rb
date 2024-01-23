@@ -1,66 +1,65 @@
 require_relative 'Model.rb'
 
-
 def random_ship_positions_array
-    ship_length=6
-    ships_array =[]
-    positions_array=[]
-    ships_classes= [
-        "Carrier", 
-        "Battleship ", 
-        "Cruiser ",
-        "Submarine", 
-        "Destroyer"
-    ]
-    ships_classes.each do |ship|
-        positions_array=build_ship_positions(ship_length, positions_array)
-        ship = Ship.new(ship, positions_array )
-        ships_array.push(ship)
-        ship_length-=1 if ship_length>3
+  ship_length = 6
+  ships_array = []
+  positions_array = []
+  ships_classes = [
+    { class_name: "Carrier", size: 6 },
+    { class_name: "Battleship", size: 5 },
+    { class_name: "Cruiser", size: 4 },
+    { class_name: "Submarine", size: 3 },
+    { class_name: "Destroyer", size: 3 },
+    { class_name: "Patrol Boat", size: 2 }
+  ]
+  random_sample = ships_classes.sample(4)
+
+  random_sample.each do |ship|
+    ship_positions_array_for_new_ship = build_ship_positions(ship[:size], positions_array)
+    ships_array << Ship.new(ship[:class_name], ship_positions_array_for_new_ship)
+    ship_positions_array_for_new_ship.each do |position|
+      positions_array << position
     end
-    ships_array
-end    
+  end
 
+  ships_array
+end
 
-def build_ship_positions(ship_length, positions_array)
-    ship_position_range = ship_length - 1
+def build_ship_positions(ship_size, positions_array)
+  ship_position_range = ship_size - 1
+  ship_random_positions = generate_random_positions(ship_position_range)
+
+  while positions_overlap?(ship_random_positions, positions_array)
     ship_random_positions = generate_random_positions(ship_position_range)
-    current_ships_coordinates_as_two_digits_chars = positions_array.map do |position|
-        "#{position[0]}#{position[1]}"
-    end
-    while positions_overlap?(ship_random_positions, current_ships_coordinates_as_two_digits_chars)
-        ship_random_positions = generate_random_positions(ship_position_range)
-    end
-    ship_random_positions = ship_random_positions.map { |number| number.chars.map(&:to_i) }
+  end
+
+  #p ship_random_positions
+  ship_random_positions
 end
 
 def generate_random_positions(ship_position_range)
-    ship_random_positions = []
-    excluded_numbers = [20, 30, 40, 50, 60, 70, 90]
-    ship_starting_position=generate_random_number_with_exclusions(excluded_numbers, 11 ,90)
-    ship_orientation_coefficient = rand(2)
-    position = ship_starting_position
-    max_ship_position = (1*ship_position_range)+ ship_starting_position
-    
-    operation = ((max_ship_position % 10 != 0) && max_ship_position <100)  ? :+ : :-
-    (0..ship_position_range).each do |offset|
-        position_increment_step= 1 * offset
-        position = operation == :+ ? position_increment_step + ship_starting_position : ship_starting_position - position_increment_step 
-        ship_random_positions << position.to_s
-    end
-    ship_random_positions.map! { |position| position.reverse } if ship_orientation_coefficient == 1
-    ship_random_positions
-    
+  ship_random_positions = []
+  ship_orientation = ['Vertical', 'Horizontal'].sample
+  coordinate_x = rand(10)
+  coordinate_y = rand(10)
 
+  if ship_orientation == 'Vertical'
+    direction = coordinate_y + ship_position_range < 10 ? 1 : -1
+    (0..ship_position_range).each do |i|
+      ship_random_positions << [coordinate_x, coordinate_y + i * direction]
+    end
+  else
+    direction = coordinate_x + ship_position_range < 10 ? 1 : -1
+
+    (0..ship_position_range).each do |i|
+      ship_random_positions << [coordinate_x + i * direction, coordinate_y]
+    end
+  end
+
+  ship_random_positions
 end
 
 def positions_overlap?(positions1, positions2)
-    positions1.any? { |element| positions2.include?(element) }
+  positions1.any? { |element| positions2.include?(element) }
 end
 
-def generate_random_number_with_exclusions(excluded_numbers, start, limit)
-    begin
-        random_number = rand(start..limit)
-    end while excluded_numbers.include?(random_number)
-random_number
-end

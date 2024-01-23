@@ -52,17 +52,17 @@ class Grid
     end        
 
     def shoot_at_position(shot)
+        result = ['MISS']
         unless @misses.include?(shot)
             @ships.each do |ship|
-                unless ship.positions.include?(shot)
-                    ship_shot_result = ship.shoot_at_ship(shot)
-                    @misses.add(shot) if ship_shot_result == 'MISS'
-                    add_sunken_ship_to_grid(ship) if ship_shot_result == 'DESTROYED'
-                    return [ship_shot_result, ship_shot_result =='DESTROYED' ? ship : nil]
-                end
+                ship_shot_result = ship.shoot_at_ship(shot)
+                add_sunken_ship_to_grid(ship) if ship_shot_result == 'DESTROYED'
+                result = ship_shot_result== "DESTROYED" ? [ship_shot_result,  ship.name ] : [ship_shot_result] 
+                return result if result[0] == 'DESTROYED' || result[0] == 'HIT'
             end
+             @misses.add(shot) if result[0] == 'MISS'
         end
-        ['MISS', nil]
+        result
     end
 end
 
