@@ -46,7 +46,7 @@ class BattleshipGUI
   def on_player_click(x, y, ai_canvas, player_canvas)
     return if @game_over
     result = @ai_grid.shoot_at_position([x / @cell_size, y / @cell_size])
-    puts "Player shot at #{x / @cell_size}, #{y / @cell_size}. Result: #{result}" unless result[0] == 'DESTROYED'
+    
     render_hit_or_miss(ai_canvas, (x / @cell_size), (y / @cell_size),  result[0])
     if result[0] == 'DESTROYED'
       render_sunk_ships(@ai_grid, ai_canvas)
@@ -59,7 +59,6 @@ class BattleshipGUI
 
 
   def render_hit_or_miss(canvas, grid_x, grid_y, result)
-
     if result == 'HIT'
       TkcOval.new(canvas, grid_x * @cell_size, grid_y * @cell_size, (grid_x + 1) * @cell_size, (grid_y + 1) * @cell_size, outline: 'black', fill: 'yellow')
     elsif result == 'MISS'
@@ -82,8 +81,10 @@ class BattleshipGUI
       position_to_shoot=[rand(10), rand(10)]
     end
     result=player_grid.shoot_at_position(position_to_shoot)
+    puts "Opponent shot at #{x / @cell_size}, #{y / @cell_size}. Result: #{result}" unless result[0] == 'DESTROYED'
     render_hit_or_miss(player_canvas, position_to_shoot[0], position_to_shoot[1], result[0])
     if result[0] == 'DESTROYED'
+      puts "#{result}"
       render_sunk_ships(player_grid, player_canvas)
     end
       check_win_condition(player_grid)
