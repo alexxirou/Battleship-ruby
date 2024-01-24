@@ -1,9 +1,13 @@
 require_relative 'Model.rb'
 
+# Generates an array of random ship positions based on predefined ship classes.
+#
+# @return [Array<Ship>] An array of Ship objects with random positions.
 def random_ship_positions_array
   ship_length = 6
   ships_array = []
   positions_array = []
+
   ships_classes = [
     { class_name: "Carrier", size: 6 },
     { class_name: "Battleship", size: 5 },
@@ -12,6 +16,7 @@ def random_ship_positions_array
     { class_name: "Destroyer", size: 3 },
     { class_name: "Patrol Boat", size: 2 }
   ]
+
   random_sample = ships_classes.sample(4)
 
   random_sample.each do |ship|
@@ -25,6 +30,11 @@ def random_ship_positions_array
   ships_array
 end
 
+# Builds ship positions for a given ship size, ensuring they do not overlap with existing positions.
+#
+# @param [Integer] ship_size The size of the ship.
+# @param [Array<Array<Integer, Integer>>] positions_array The array of existing positions to avoid overlap.
+# @return [Array<Array<Integer, Integer>>] An array of ship positions for a new ship.
 def build_ship_positions(ship_size, positions_array)
   ship_position_range = ship_size - 1
   ship_random_positions = generate_random_positions(ship_position_range)
@@ -33,10 +43,13 @@ def build_ship_positions(ship_size, positions_array)
     ship_random_positions = generate_random_positions(ship_position_range)
   end
 
-  #p ship_random_positions
   ship_random_positions
 end
 
+# Generates random positions for a ship based on its size and orientation.
+#
+# @param [Integer] ship_position_range The range of positions for the ship.
+# @return [Array<Array<Integer, Integer>>] An array of randomly generated ship positions.
 def generate_random_positions(ship_position_range)
   ship_random_positions = []
   ship_orientation = ['Vertical', 'Horizontal'].sample
@@ -59,7 +72,11 @@ def generate_random_positions(ship_position_range)
   ship_random_positions
 end
 
+# Checks if two sets of positions overlap.
+#
+# @param [Array<Array<Integer, Integer>>] positions1 The first set of positions.
+# @param [Array<Array<Integer, Integer>>] positions2 The second set of positions.
+# @return [Boolean] True if there is an overlap, false otherwise.
 def positions_overlap?(positions1, positions2)
   positions1.any? { |element| positions2.include?(element) }
 end
-

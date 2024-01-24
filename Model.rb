@@ -1,92 +1,121 @@
 require 'set'
-#A ship that can be placed on the grid
+
+# A ship that can be placed on the grid
 class Ship
-    attr_reader :name, :positions, :hits_received
+  attr_reader :name, :positions, :hits_received
 
-    def inspect_ship_object
-        "Ship.new('#{@name}', #{@positions})"
+  # Initializes a new instance of the Ship class.
+  #
+  # @param [String] ship_name The name of the ship.
+  # @param [Array<Array<Integer, Integer>>] ship_positions The positions occupied by the ship.
+  def initialize(ship_name, ship_positions)
+    @name = ship_name
+    @positions = Set.new(ship_positions)
+    @hits_received = Set.new
+  end
+
+  # Compares two ships to check if they are equal.
+  #
+  # @param [Ship] other_ship The ship to compare.
+  # @return [Boolean] True if the ships are equal, false otherwise.
+  def compare_ships(other_ship)
+    @name == other_ship.name && @positions == other_ship.positions
+  end
+
+  # Checks if the ship is still afloat (not destroyed).
+  #
+  # @return [Boolean] True if the ship is afloat, false if destroyed.
+  def ship_afloat?
+    @positions != @hits_received
+  end
+
+  # Fires a shot at the ship.
+  #
+  # @param [Array<Integer, Integer>] shot The coordinates of the shot.
+  # @return [String] The result of the shot ('HIT', 'DESTROYED', 'MISS').
+  def shoot_at_ship(shot)
+    if @positions.include?(shot)
+      @hits_received.add(shot)
+      return ship_afloat? ? 'HIT' : 'DESTROYED'
     end
-
-    def initialize(ship_name, ship_positions)
-        @name = ship_name
-        @positions = Set.new(ship_positions)
-        @hits_received = Set.new
-    end
-
-    def compare_ships(other_ship)
-        @name==other_ship.name && @positions==other_ship.positions
-    end
-
-    def ship_afloat?
-        @positions!=@hits_received
-    end    
-
-    def shoot_at_ship(shot)
-        if @positions.include?(shot) 
-            @hits_received.add(shot)
-            return ship_afloat? ? 'HIT' : 'DESTROYED'
-        end
-        'MISS'
-    end         
-
+    'MISS'
+  end
 end
 
+# Represents the grid for the Battleship game.
 class Grid
-    attr_reader :size_x, :size_y, :misses, :ships, :sunken_ships
-    
+  attr_reader :size_x, :size_y, :misses, :ships, :sunken_ships
 
-    def initialize(size_x, size_y, ships=Set[], misses=Set[])
-        @size_x=size_x
-        @size_y=size_y
-        @ships=ships
-        @misses=misses
-        @sunken_ships = Set[]
-    end
-    
-    def add_ship_to_grid(ship)
-        @ships.add(ship)
-    end
+  # Initializes a new instance of the Grid class.
+  #
+  # @param [Integer] size_x The size of the grid along the x-axis.
+  # @param [Integer] size_y The size of the grid along the y-axis.
+  # @param [Set<Ship>] ships The set of ships on the grid.
+  # @param [Set<Array<Integer, Integer>>] misses The set of missed shots on the grid.
+  def initialize(size_x, size_y, ships = Set[], misses = Set[])
+    @size_x = size_x
+    @size_y = size_y
+    @ships = ships
+    @misses = misses
+    @sunken_ships = Set[]
+  end
 
-    def add_sunken_ship_to_grid(ship)
-        @sunken_ships.add(ship) 
-    end        
+  # Adds a ship to the grid.
+  #
+  # @param [Ship] ship The ship to be added to the grid.
+  def add_ship_to_grid(ship)
+    @ships.add(ship)
+  end
 
-    def shoot_at_position(shot)
-        result = ['MISS']
-        unless @misses.include?(shot)
-            @ships.each do |ship|
-                ship_shot_result = ship.shoot_at_ship(shot)
-                add_sunken_ship_to_grid(ship) if ship_shot_result == 'DESTROYED'
-                result = ship_shot_result== "DESTROYED" ? [ship_shot_result,  ship.name ] : [ship_shot_result] 
-                return result if result[0] == 'DESTROYED' || result[0] == 'HIT'
-            end
-             @misses.add(shot) if result[0] == 'MISS'
-        end
-        result
+  # Adds a sunken ship to the grid.
+  #
+  # @param [Ship] ship The sunken ship to be added to the grid.
+  def add_sunken_ship_to_grid(ship)
+    @sunken_ships.add(ship)
+  end
+
+  # Fires a shot at a specific position on the grid.
+  #
+  # @param [Array<Integer, Integer>] shot The coordinates of the shot.
+  # @return [Array<String, String>|Array<String>] The result of the shot ('MISS', 'HIT', 'DESTROYED') and ship name (if destroyed).
+  def shoot_at_position(shot)
+    result = ['MISS']
+    unless @misses.include?(shot)
+      @ships.each do |ship|
+        ship_shot_result = ship.shoot_at_ship(shot)
+        add_sunken_ship_to_grid(ship) if ship_shot_result == 'DESTROYED'
+        result = ship_shot_result == 'DESTROYED' ? [ship_shot_result, ship.name] : [ship_shot_result]
+        return result if result[0] == 'DESTROYED' || result[0] == 'HIT'
+      end
+      @misses.add(shot) if result[0] == 'MISS'
     end
+    result
+  end
 end
 
-
-
+# Loads a grid from a file containing grid dimensions and ship data.
+#
+# @param [String] file The path to the file containing grid dimensions and ship data.
+# @return [Grid] The grid loaded from the file.
 def load_grid_from_file(file)
-    dimensions_x_y = []
-    ships_array=[]
-    File.foreach(file).with_index do |line, line_number|
-        if line_number ==0
-        dimensions_x_y = line.chomp.strip.split(":").flatten 
-        end
-        ships_array<<add_ships_from_data_source(line)  if line_number >= 1 
-    end    
-    Grid.new(dimensions_x_y[0].to_i, dimensions_x_y[1].to_i, ships_array)
+  dimensions_x_y = []
+  ships_array = []
+  File.foreach(file).with_index do |line, line_number|
+    if line_number == 0
+      dimensions_x_y = line.chomp.strip.split(":").flatten
+    end
+    ships_array << add_ships_from_data_source(line) if line_number >= 1
+  end
+  Grid.new(dimensions_x_y[0].to_i, dimensions_x_y[1].to_i, ships_array)
 end
 
-
-
+# Adds ships to the grid based on data from a data source (e.g., file).
+#
+# @param [String] source The data source containing ship information.
+# @return [Ship] The ship created from the data source.
 def add_ships_from_data_source(source)
-    ship_params = source.chomp.split(" ")
-    name = ship_params[0]
-    positions = ship_params[1..].map { |pos| pos.split(":").map(&:to_i) }
-    Ship.new(name, positions)     
+  ship_params = source.chomp.split(" ")
+  name = ship_params[0]
+  positions = ship_params[1..].map { |pos| pos.split(":").map(&:to_i) }
+  Ship.new(name, positions)
 end
-
-
