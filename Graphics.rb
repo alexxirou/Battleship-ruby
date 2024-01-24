@@ -1,7 +1,7 @@
 require 'tk'
 require_relative 'Model.rb'
 require_relative 'Random_ship_generator.rb'
-
+require_relative 'Opponent_logic.rb'
 
 class BattleshipGUI
   def initialize(grid1, grid2)
@@ -11,6 +11,7 @@ class BattleshipGUI
     @root = TkRoot.new { title 'Battleship' }
     @cell_size = 40
     draw_grids
+    @ai=AI.new
   end
 
 
@@ -76,19 +77,21 @@ class BattleshipGUI
   end
 
   def opponent_shoots(player_grid, player_canvas)
-    position_to_shoot=[rand(10), rand(10)]
-    while player_grid.misses.include?(position_to_shoot)
-      position_to_shoot=[rand(10), rand(10)]
-    end
-    result=player_grid.shoot_at_position(position_to_shoot)
-    puts "Opponent shot at #{x / @cell_size}, #{y / @cell_size}. Result: #{result}" unless result[0] == 'DESTROYED'
-    render_hit_or_miss(player_canvas, position_to_shoot[0], position_to_shoot[1], result[0])
-    if result[0] == 'DESTROYED'
-      puts "#{result}"
-      render_sunk_ships(player_grid, player_canvas)
-    end
-      check_win_condition(player_grid)
-  end   
+
+  position_to_shoot = @ai.next_shot(player_grid)
+
+  result = player_grid.shoot_at_position(position_to_shoot)
+  puts "Opponent shot at #{position_to_shoot[0]}, #{position_to_shoot[1]}. Result: #{result}" unless result[0] == 'DESTROYED'
+  render_hit_or_miss(player_canvas, position_to_shoot[0], position_to_shoot[1], result[0])
+  if result[0] == 'DESTROYED'
+    puts "#{result}"
+    render_sunk_ships(player_grid, player_canvas)
+  end
+  check_win_condition(player_grid)
+  @ai.record_shot(position_to_shoot, result[0], player_grid)
+end
+
+
 
   def render_player_ships(grid, canvas)
     draw_ships(grid.ships, canvas, 'blue')  
