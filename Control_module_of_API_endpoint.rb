@@ -19,13 +19,20 @@ post '/api/move' do
   ai.record_shot(ai_shoot_position, ai_result, game_state[:player_grid])
   player_sunken_ships = game_state[:player_grid].sunken_ships_positions.to_a if ai_result[0] == 'DESTROYED'
 
+  game_over = check_win_condition(game_state[:ai_grid])
+
+  if game_over
+    session.clear # Close the session
+  end
+
   content_type :json
   {
     player_result: player_result,
     opponent_sunken_ships: opponent_sunken_ships,
     ai_result: ai_result,
     ai_shoot_position: ai_shoot_position,
-    player_sunken_ships: player_sunken_ships
+    player_sunken_ships: player_sunken_ships,
+    game_over: game_over
   }.to_json
 end
 
@@ -36,7 +43,8 @@ get '/initial_game_data' do
   content_type :json
   {
     player_grid: game_state[:player_grid],
-    ai_grid: game_state[:ai_grid]
+    ai_grid: game_state[:ai_grid],
+    game_over: false
     # Exclude player_ships_array from the response
   }.to_json
 end
