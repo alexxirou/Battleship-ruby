@@ -2,7 +2,7 @@ require 'set'
 
 # A ship that can be placed on the grid
 class Ship
-  attr_reader :name, :positions, :hits_received
+  attr_reader :name, :positions
 
   # Initializes a new instance of the Ship class.
   #
@@ -44,7 +44,7 @@ end
 
 # Represents the grid for the Battleship game.
 class Grid
-  attr_reader :size_x, :size_y, :misses, :ships, :sunken_ships
+  attr_reader :size_x, :size_y, :ships, :misses , :sunken_ships
 
   # Initializes a new instance of the Grid class.
   #
@@ -63,8 +63,10 @@ class Grid
   # Adds a ship to the grid.
   #
   # @param [Ship] ship The ship to be added to the grid.
-  def add_ship_to_grid(ship)
-    @ships.add(ship)
+  def ships=(ship_array)
+    ship_array.each do |ship|
+      @ships.add(ship)
+    end
   end
 
   # Adds a sunken ship to the grid.

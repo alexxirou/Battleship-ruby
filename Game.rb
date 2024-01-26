@@ -7,13 +7,10 @@ def main
   player_ships_array = random_ship_positions_array
   ai_ships_array = random_ship_positions_array
 
-  player_ships_array.each do |ship|
-    player_grid.add_ship_to_grid(ship)
-  end
 
-  ai_ships_array.each do |ship|
-    ai_grid.add_ship_to_grid(ship)
-  end
+  player_grid.ships= player_ships_array
+  ai_grid.ships=ai_ships_array
+  
 
   new_game = BattleshipGUI.new(player_grid, ai_grid)
   new_game.run
