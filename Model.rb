@@ -41,51 +41,36 @@ class Ship
     'MISS'
   end
 end
-
 # Represents the grid for the Battleship game.
 class Grid
-  attr_reader :size_x, :size_y, :ships, :misses , :sunken_ships
+  attr_reader :size_x, :size_y, :ships, :misses, :observers
 
-  # Initializes a new instance of the Grid class.
-  #
-  # @param [Integer] size_x The size of the grid along the x-axis.
-  # @param [Integer] size_y The size of the grid along the y-axis.
-  # @param [Set<Ship>] ships The set of ships on the grid.
-  # @param [Set<Array<Integer, Integer>>] misses The set of missed shots on the grid.
   def initialize(size_x, size_y, ships = Set[], misses = Set[])
     @size_x = size_x
     @size_y = size_y
-    @ships = ships
+    @ships = Set.new(ships)
     @misses = misses
-    @sunken_ships = Set[]
+    @observers = []
   end
 
-  # Adds a ship to the grid.
-  #
-  # @param [Ship] ship The ship to be added to the grid.
   def ships=(ship_array)
-    ship_array.each do |ship|
-      @ships.add(ship)
-    end
+    @ships = Set.new(ship_array)
   end
 
-  # Adds a sunken ship to the grid.
-  #
-  # @param [Ship] ship The sunken ship to be added to the grid.
-  def add_sunken_ship_to_grid(ship)
-    @sunken_ships.add(ship)
+  def add_observer(observer)
+    @observers << observer
   end
 
-  # Fires a shot at a specific position on the grid.
-  #
-  # @param [Array<Integer, Integer>] shot The coordinates of the shot.
-  # @return [Array<String, String>|Array<String>] The result of the shot ('MISS', 'HIT', 'DESTROYED') and ship name (if destroyed).
+
+
   def shoot_at_position(shot)
     result = ['MISS']
     unless @misses.include?(shot)
       @ships.each do |ship|
         ship_shot_result = ship.shoot_at_ship(shot)
-        add_sunken_ship_to_grid(ship) if ship_shot_result == 'DESTROYED'
+        
+          add_observer(observer = Sunk_ship_observer.new(ship.positions)) if ship_shot_result == 'DESTROYED'
+        
         result = ship_shot_result == 'DESTROYED' ? [ship_shot_result, ship.name] : [ship_shot_result]
         return result if result[0] == 'DESTROYED' || result[0] == 'HIT'
       end
@@ -93,7 +78,37 @@ class Grid
     end
     result
   end
+
+  def win_condition_met?
+    @observers.size == @ships.size
+  end
 end
+
+class ShipObserver
+  def initialize(positions)
+    @positions = Set.new(positions)
+  end
+
+  def update_sunk_positions(_)
+    # No need to update positions for individual ships
+    # You can customize this method if needed
+  end
+end
+
+class Sunk_ship_observer < ShipObserver
+  attr_reader :positions
+
+  def initialize(positions)
+    super(positions)
+  end
+
+  def update_sunk_positions(positions)
+    @positions.merge(positions)
+  end
+end
+
+
+
 
 # Loads a grid from a file containing grid dimensions and ship data.
 #

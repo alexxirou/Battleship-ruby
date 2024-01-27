@@ -13,11 +13,11 @@ post '/api/move' do
   game_state = session[:game_state]
 
   player_result = game_state[:ai_grid].shoot_at_position([params['shoot_position'].split(',').map(&:to_i)])
-  opponent_sunken_ships = game_state[:ai_grid].sunken_ships_positions.to_a if player_result[0] == 'DESTROYED'
+  opponent_sunken_ships = game_state[:ai_grid].observers.positions.flatten.to_a if player_result[0] == 'DESTROYED'
   ai_shoot_position = ai.next_shot(game_state[:player_grid])
   ai_result = game_state[:player_grid].shoot_at_position(ai_shoot_position)
   ai.record_shot(ai_shoot_position, ai_result, game_state[:player_grid])
-  player_sunken_ships = game_state[:player_grid].sunken_ships_positions.to_a if ai_result[0] == 'DESTROYED'
+  player_sunken_ships = game_state[:player_grid].observers.positions.flatten.to_a if ai_result[0] == 'DESTROYED'
 
   game_over = check_win_condition(game_state[:ai_grid])
 

@@ -98,7 +98,7 @@ class BattleshipGUI
   # @param [Grid] grid The grid to check for win condition.
   # @return [Boolean] True if the game is over, false otherwise.
   def check_win_condition(grid)
-    if grid.sunken_ships.size == grid.ships.size
+    if grid.win_condition_met?
       puts grid == @ai_grid ? "You win!" : "Opponent wins!"
       @game_over = true
     end
@@ -135,7 +135,7 @@ class BattleshipGUI
   # @param [Grid] grid The opponent's grid.
   # @param [TkCanvas] canvas The canvas to draw on.
   def render_sunk_ships(grid, canvas)
-    draw_ships(grid.sunken_ships, canvas, 'red')
+    draw_ships(grid.observers, canvas, 'red')
   end
 
   # Draws ships on the canvas.

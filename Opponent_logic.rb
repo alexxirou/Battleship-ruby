@@ -30,7 +30,7 @@ class AI
   def record_shot(shot, result, grid)
     if result == 'HIT' || result == 'DESTROYED'
       
-      update_ship_orientation(shot)
+      update_ship_orientation(shot,grid)
       @last_hit_position = shot
       @grid_hits.add(shot)
     end
@@ -151,11 +151,11 @@ class AI
 
 
 
-  def update_ship_orientation(last_hit)
+  def update_ship_orientation(last_hit, grid)
     return if @last_hit_position.nil?
 
   # Check if the last hit position is of a sunken ship
-    if @sunken_ships_positions.include?(@last_hit_position)
+    if grid.observers.flatten.include?(@last_hit_position)
       @ship_orientation = nil
     else
       last_x, last_y = @last_hit_position
@@ -173,20 +173,6 @@ class AI
     end
   end
 
-  # Updates the ship orientation based on the last hit.
-  #
-  # @param [Array<Integer, Integer>] last_hit The coordinates of the last hit.
-  def update_remaining_ships(result, grid)
-    if result == 'DESTROYED'
-      # Find the size of the destroyed ship and remove it from the remaining ships
-      grid.sunken_ships.each do |ship|
-        ship.positions.each do |position|
-          @sunken_ships_positions.add(position)
-        end
-      end
-    end
-  end
-
-
+  
 
 
