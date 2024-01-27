@@ -68,8 +68,7 @@ class Grid
     unless @misses.include?(shot)
       @ships.each do |ship|
         ship_shot_result = ship.shoot_at_ship(shot)
-        
-          add_observer(observer = Sunk_ship_observer.new(ship.positions)) if ship_shot_result == 'DESTROYED'
+        add_observer(observer = Sunk_ship_observer.new(ship)) if ship_shot_result == 'DESTROYED'
         
         result = ship_shot_result == 'DESTROYED' ? [ship_shot_result, ship.name] : [ship_shot_result]
         return result if result[0] == 'DESTROYED' || result[0] == 'HIT'
@@ -85,8 +84,8 @@ class Grid
 end
 
 class ShipObserver
-  def initialize(positions)
-    @positions = Set.new(positions)
+  def initialize(ship)
+    @positions = Set.new(ship.positions)
   end
 
   def update_sunk_positions(_)
@@ -98,12 +97,12 @@ end
 class Sunk_ship_observer < ShipObserver
   attr_reader :positions
 
-  def initialize(positions)
-    super(positions)
+  def initialize(ship)
+    super(ship)
   end
 
-  def update_sunk_positions(positions)
-    @positions.merge(positions)
+  def update_sunk_positions(ship)
+    @positions.merge(ship.positions)
   end
 end
 
@@ -136,3 +135,4 @@ def add_ships_from_data_source(source)
   positions = ship_params[1..].map { |pos| pos.split(":").map(&:to_i) }
   Ship.new(name, positions)
 end
+

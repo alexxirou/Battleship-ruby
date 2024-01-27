@@ -10,7 +10,6 @@ class AI
     @grid_hits = Set.new
     @last_hit_position = nil
     @ship_orientation = nil
-    @sunken_ships_positions = Set.new
   end
 
   # Gets the next shot for the AI based on the current state of the grid.
@@ -34,8 +33,6 @@ class AI
       @last_hit_position = shot
       @grid_hits.add(shot)
     end
-
-    update_remaining_ships(result, grid)
   end
 
   private
@@ -110,7 +107,8 @@ class AI
   # @param [Grid] grid The current state of the grid.
   # @return [Array<Integer, Integer>] The target position around the last hit.
   def target_around_last_hit(grid)
-    return nil if @last_hit_position.nil? || @sunken_ships_positions.include?(@last_hit_position)
+    return nil if @last_hit_position.nil? || grid.observers.any? { |observer| observer.positions.include?(@last_hit_position) }
+    
 
     x, y = @last_hit_position
 
@@ -152,27 +150,23 @@ class AI
 
 
   def update_ship_orientation(last_hit, grid)
-    return if @last_hit_position.nil?
+    @ship_orientation = nil
+    return if @last_hit_position.nil? || grid.observers.any? { |observer| observer.positions.include?(@last_hit_position) }
 
-  # Check if the last hit position is of a sunken ship
-    if grid.observers.flatten.include?(@last_hit_position)
-      @ship_orientation = nil
-    else
-      last_x, last_y = @last_hit_position
+    
+    
+    last_x, last_y = @last_hit_position
       current_x, current_y = last_hit
 
     # Check if the last two hits are in the same row or column
-      if last_x == current_x
-        @ship_orientation = 'Vertical'
-      elsif last_y == current_y
-        @ship_orientation = 'Horizontal'
-      else
-      # If the hits are neither in the same row nor column, reset the ship orientation
-        @ship_orientation = nil
-      end
+    if last_x == current_x
+      @ship_orientation = 'Vertical'
+    elsif last_y == current_y
+      @ship_orientation = 'Horizontal'
     end
+    @ship_orientation
   end
 
   
 
-
+  
