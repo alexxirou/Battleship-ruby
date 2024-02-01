@@ -50,8 +50,8 @@ get '/initial_game_data' do
 end
 
 def initialize_game_state(grid_size, num_ships)
-  player_grid = Grid.new(grid_size, grid_size)
-  ai_grid = Grid.new(grid_size, grid_size)
+  player_grid = Grid.new(size_x: grid_size, size_y: grid_size)
+  ai_grid = Grid.new(size_x: grid_size, size_y: grid_size)
 
   player_ships_array = RandomShipGenerator.new.generate_random_ships(num_ships)
   ai_ships_array = RandomShipGenerator.new.generate_random_ships(num_ships)

@@ -2,8 +2,8 @@ require_relative 'Random_ship_generator.rb'
 require_relative 'Graphics.rb'
 
 def main
-  player_grid = Grid.new(10, 10)
-  ai_grid = Grid.new(10, 10)
+  player_grid = Grid.new(size_x: 10, size_y: 10)
+  ai_grid = Grid.new(size_x: 10, size_y: 10)
   player_ships_array = random_ship_positions_array
   ai_ships_array = random_ship_positions_array
 
