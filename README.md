@@ -31,12 +31,12 @@ The project is implemented using Ruby with the Sinatra framework and features a 
 3. **Winning**: The game continues until one player sinks all the opponent's ships. The player or AI with the remaining ships wins.
 
 ## Installation
-```Bash
-1. Clone the repository:
 
+1. Clone the repository:
+```Bash
    
    git clone https://github.com/yourusername/battleship-game.git
-
+```
 
 ### Web Version (Sinatra)
 
