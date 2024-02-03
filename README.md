@@ -63,7 +63,7 @@ The project is implemented using Ruby with the Sinatra framework and features a 
    sudo ln -s /etc/nginx/sites-available/battleship-game /etc/nginx/sites-enabled
 ```
 5. Restart nginx
-
+ ```Bash
    sudo service nginx restart
   ``` 
 ### Desktop Version (Tkinter) 
