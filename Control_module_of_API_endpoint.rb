@@ -6,7 +6,12 @@ require_relative 'Opponent_logic.rb'
 
 enable :sessions
 set :port, 4567
+
 ai = AI.new
+
+before do
+  content_type :json
+end
 
 post '/api/move' do
   session[:game_state] ||= initialize_game_state(params['gridSize'].to_i, params['NumShips'].to_i)
@@ -21,17 +26,14 @@ post '/api/move' do
 
   game_over = check_win_condition(game_state[:ai_grid])
 
-  if game_over
-    session.clear # Close the session
-  end
+  clear_session if game_over
 
-  content_type :json
   {
     player_result: player_result,
-    opponent_sunken_ships: opponent_sunken_ships,
+    opponent_sunken_ships: opponent_last_sunken_ship,
     ai_result: ai_result,
     ai_shoot_position: ai_shoot_position,
-    player_sunken_ships: player_sunken_ships,
+    player_sunken_ships: player_last_sunken_ship,
     game_over: game_over
   }.to_json
 end
@@ -40,7 +42,6 @@ get '/initial_game_data' do
   session[:game_state] ||= initialize_game_state(params['gridSize'].to_i, params['NumShips'].to_i)
   game_state = session[:game_state]
 
-  content_type :json
   {
     player_grid: game_state[:player_grid],
     ai_grid: game_state[:ai_grid],
@@ -49,15 +50,30 @@ get '/initial_game_data' do
   }.to_json
 end
 
-def initialize_game_state(grid_size, num_ships)
-  player_grid = Grid.new(size_x: grid_size, size_y: grid_size)
-  ai_grid = Grid.new(size_x: grid_size, size_y: grid_size)
+helpers do
+  def initialize_game_state(grid_size, num_ships)
+    player_grid = Grid.new(size_x: grid_size, size_y: grid_size)
+    ai_grid = Grid.new(size_x: grid_size, size_y: grid_size)
 
-  player_ships_array = RandomShipGenerator.new.generate_random_ships(num_ships)
-  ai_ships_array = RandomShipGenerator.new.generate_random_ships(num_ships)
+    player_ships_array = RandomShipGenerator.new.generate_random_ships(num_ships)
+    ai_ships_array = RandomShipGenerator.new.generate_random_ships(num_ships)
 
-  player_ships_array.each { |ship| player_grid.add_ship_to_grid(ship) }
-  ai_ships_array.each { |ship| ai_grid.add_ship_to_grid(ship) }
+    player_ships_array.each { |ship| player_grid.add_ship_to_grid(ship) }
+    ai_ships_array.each { |ship| ai_grid.add_ship_to_grid(ship) }
 
-  { player_grid: player_grid, ai_grid: ai_grid }
+    { player_grid: player_grid, ai_grid: ai_grid }
+  end
+
+  def check_win_condition(grid)
+    if grid.win_condition_met?
+      puts grid == session[:game_state][:ai_grid] ? "You win!" : "Opponent wins!"
+      true
+    else
+      false
+    end
+  end
+
+  def clear_session
+    session.clear
+  end
 end
