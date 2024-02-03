@@ -55,11 +55,11 @@ helpers do
     player_grid = Grid.new(size_x: grid_size, size_y: grid_size)
     ai_grid = Grid.new(size_x: grid_size, size_y: grid_size)
 
-    player_ships_array = RandomShipGenerator.new.generate_random_ships(num_ships)
-    ai_ships_array = RandomShipGenerator.new.generate_random_ships(num_ships)
+    player_ships_array = random_ship_positions_array(Grid.size_x)
+    ai_ships_array = random_ship_positions_array(Grid.size_x)
 
-    player_ships_array.each { |ship| player_grid.add_ship_to_grid(ship) }
-    ai_ships_array.each { |ship| ai_grid.add_ship_to_grid(ship) }
+    player_grid.ships = player_ships_array
+    ai_grid.ships = ai_ships_array
 
     { player_grid: player_grid, ai_grid: ai_grid }
   end

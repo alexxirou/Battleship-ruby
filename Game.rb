@@ -8,8 +8,8 @@ def main
   ai_grid = Grid.new(size_x: 10, size_y: 10)
   
   # generate random ship positions for player and AI
-  player_ships_array = random_ship_positions_array
-  ai_ships_array = random_ship_positions_array
+  player_ships_array = random_ship_positions_array(player_grid.size_x)
+  ai_ships_array = random_ship_positions_array(ai_grid.size_x)
 
   # set ships on the grids
   player_grid.ships = player_ships_array

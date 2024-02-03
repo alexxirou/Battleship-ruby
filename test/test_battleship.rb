@@ -1,6 +1,6 @@
 rrequire 'set'
 
-cequire 'set'
+
 
 class Ship
   attr_reader :name, :positions
