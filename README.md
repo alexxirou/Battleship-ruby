@@ -94,3 +94,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 
 # Contact
+
+For inquiries or further information, please contact alex.xirou@hotmail.com
