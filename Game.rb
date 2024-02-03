@@ -19,3 +19,7 @@ def main
   new_game = BattleshipGUI.new(player_grid, ai_grid)
   new_game.run
 end
+
+if $PROGRAM_NAME == __FILE__
+  main
+end  

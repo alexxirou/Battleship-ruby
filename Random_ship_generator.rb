@@ -17,7 +17,8 @@ def random_ship_positions_array(row_length)
     { class_name: "Patrol Boat", size: 2 }
   ]
 
-  random_sample = ships_classes.sample(4)
+  num_ships_to_sample = 4
+  random_sample = ships_classes.sample(num_ships_to_sample)
 
   random_sample.each do |ship|
     ship_positions_array_for_new_ship = build_ship_positions(ship[:size], positions_array, row_length)
