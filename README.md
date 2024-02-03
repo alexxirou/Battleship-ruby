@@ -31,7 +31,7 @@ The project is implemented using Ruby with the Sinatra framework and features a 
 3. **Winning**: The game continues until one player sinks all the opponent's ships. The player or AI with the remaining ships wins.
 
 ## Installation
-
+```Bash
 1. Clone the repository:
 
    
@@ -41,11 +41,11 @@ The project is implemented using Ruby with the Sinatra framework and features a 
 ### Web Version (Sinatra)
 
 2. Install and Configure Nginx:
-
+ ```Bash
   sudo apt-get install nginx
-
+```
 3. Edit Nginx configuration (e.g., /etc/nginx/sites-available/battleship-game):
-
+```
   server {
     listen 80;
     server_name yourdomain.com;
@@ -57,21 +57,21 @@ The project is implemented using Ruby with the Sinatra framework and features a 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 }
-
+```
 4. Create a symbolic link to sites-enabled:
-
+ ```Bash
    sudo ln -s /etc/nginx/sites-available/battleship-game /etc/nginx/sites-enabled
-
+```
 5. Restart nginx
 
    sudo service nginx restart
-   
+  ``` 
 ### Desktop Version (Tkinter) 
 
 6. Run the Game.rb
-
+ ```Bash
    ruby game.rb
-
+   ```
 
 # Dependencies
 
