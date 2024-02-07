@@ -84,10 +84,10 @@ The project is implemented using Ruby with the Sinatra framework and features a 
    --enable-pthread
    ```
 
-   Run the Game.rb
-    ```Bash
-      ruby game.rb
-      ```
+7.Run the Game.rb
+```Bash
+   ruby game.rb
+```
 
 # Dependencies
 
