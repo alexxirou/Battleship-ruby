@@ -5,7 +5,7 @@ module RandomShipGenerator
   # @return [Array<Ship>] An array of Ship objects with random positions.
   def self.random_ship_positions_array(row_length)
     ships_array = []
-    positions_array = []
+    used_positions_array = []
   
     ships_classes = [
       { class_name: "Carrier", size: 6 },
@@ -20,10 +20,10 @@ module RandomShipGenerator
     random_sample = ships_classes.sample(num_ships_to_sample)
   
     random_sample.each do |ship|
-      ship_positions_array_for_new_ship = build_ship_positions(ship[:size], positions_array, row_length)
-      ships_array << Model::Ship.new(ship[:class_name], ship_positions_array_for_new_ship)
+      ship_positions_array_for_new_ship = build_ship_positions(ship[:size], used_positions_array, row_length)
+      ships_array << [ship[:class_name], ship_positions_array_for_new_ship]
       ship_positions_array_for_new_ship.each do |position|
-        positions_array << position
+        used_positions_array << position
       end
     end
   
