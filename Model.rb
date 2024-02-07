@@ -54,10 +54,10 @@ module Model
     # @param size_y [Integer] The vertical size of the grid.
     # @param ships [Array] An array of ships on the grid (default is an empty array).
     # @param misses [Array] An array of positions where shots have been missed (default is an empty array).
-    def initialize(size_x:, size_y:, ships: [], misses: [] )
+    def initialize(size_x:, size_y:, ships: [], misses: [])
       @size_x = size_x
       @size_y = size_y
-      self.ships=ships 
+      self.ships = ships
       @misses = misses.nil? ? Set.new : Set.new(misses)
       @observers = []
     end
@@ -66,9 +66,9 @@ module Model
     #
     # @param ship_array [Array] An array of ships to be set on the grid.
     def ships=(ship_array)
-      @ships = ship_array.nil? ? [] :  ship_array.map { |ship_data| Ship.new(ship_data[0], ship_data[1])} 
+      @ships = ship_array.nil? ? [] : ship_array.map { |ship_data| Ship.new(ship_data[0], ship_data[1]) }
     end
-    
+
     # Adds an observer to the list of observers for the grid.
     #
     # @param observer [Object] The observer object to be added.
@@ -155,41 +155,38 @@ module Model
     end
   end
 
-# Loads a grid from a file containing grid dimensions and ship data.
-#
-# @param [String] file The path to the file containing grid dimensions and ship data.
-# @return [Grid] The grid loaded from the file.
-def self.load_grid_from_file(file)
-  dimensions_x_y = []
-  ships_array = []
-  file = File.open(file, 'r') unless file.is_a?(File) # Open the file if it's not already open
+  # Loads a grid from a file containing grid dimensions and ship data.
+  #
+  # @param [String] file The path to the file containing grid dimensions and ship data.
+  # @return [Grid] The grid loaded from the file.
+  def self.load_grid_from_file(file)
+    dimensions_x_y = []
+    ships_array = []
+    file = File.open(file, "r") unless file.is_a?(File) # Open the file if it's not already open
 
-  begin
-    file.each_line.with_index do |line, line_number|
-      if line_number == 0
-        dimensions_x_y = line.chomp.strip.split(":").flatten
+    begin
+      file.each_line.with_index do |line, line_number|
+        if line_number == 0
+          dimensions_x_y = line.chomp.strip.split(":").flatten
+        end
+        ships_array << add_ships_from_data_source(line) if line_number >= 1
       end
-      ships_array << add_ships_from_data_source(line) if line_number >= 1
+      Grid.new(size_x: dimensions_x_y[0].to_i, size_y: dimensions_x_y[1].to_i, ships: (ships_array unless ships_array[0].nil?))
+    ensure
+      file.close if file && !file.closed? # Close the file only if it's open
     end
-    Grid.new(size_x: dimensions_x_y[0].to_i, size_y: dimensions_x_y[1].to_i, ships: (ships_array unless ships_array[0].nil?))
-  ensure
-    file.close if file && !file.closed? # Close the file only if it's open
   end
-end
-
 
   # Adds ships to the grid based on data from a data source (e.g., file).
   #
   # @param [String] source The data source containing ship information.
-  # @return [Ship] The ship created from the data source.
+  # @return [Array] The ship array created from the data source.
   def self.add_ships_from_data_source(source)
     ship_params = source.chomp.split(" ")
     unless ship_params.empty?
       name = ship_params[0]
-      positions = Set.new(ship_params[1..].map { |pos| pos.split(":").map(&:to_i) }) 
+      positions = Set.new(ship_params[1..].map { |pos| pos.split(":").map(&:to_i) })
       [name, positions]
     end
-    
   end
-end  
-
+end

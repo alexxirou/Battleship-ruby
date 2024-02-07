@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>README - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/navigation.js" defer></script>
+<script src="./js/search.js" defer></script>
+<script src="./js/search_index.js" defer></script>
+<script src="./js/searcher.js" defer></script>
+<script src="./js/darkfish.js" defer></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search (/) for a class, method, ..." spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+
+
+  <ul class="link-list" role="directory">
+              <li>
+            <details open>
+              <summary>      <a href="#label-Battleship+Game">Battleship Game</a>
+</summary>
+              <ul class="link-list" role="directory">
+                          <li>      <a href="#label-Table+of+Contents">Table of Contents</a>
+          <li>      <a href="#label-Overview">Overview</a>
+          <li>      <a href="#label-Features">Features</a>
+          <li>      <a href="#label-How+to+Play">How to Play</a>
+          <li>
+            <details open>
+              <summary>      <a href="#label-Installation">Installation</a>
+</summary>
+              <ul class="link-list" role="directory">
+                          <li>      <a href="#label-Desktop+Version+-28Tkinter-29">Desktop Version (Tkinter)</a>
+
+              </ul>
+            </details>
+          </li>
+
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details open>
+              <summary>      <a href="#label-Dependencies">Dependencies</a>
+</summary>
+              <ul class="link-list" role="directory">
+                          <li>      <a href="#label-Web+Version+-28Sinatra-29">Web Version (Sinatra)</a>
+          <li>      <a href="#label-Desktop+Version+-28Tkinter-29">Desktop Version (Tkinter)</a>
+
+              </ul>
+            </details>
+          </li>
+          <li>      <a href="#label-License">License</a>
+          <li>      <a href="#label-Contact">Contact</a>
+
+  </ul>
+</div>
+
+
+  <div id="project-metadata">
+    
+<div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+    <li><a href="./Gemfile.html">Gemfile</a>
+    <li><a href="./Gemfile_lock.html">Gemfile.lock</a>
+    <li><a href="./README_md.html">README</a>
+    <li><a href="./bundle/config.html">config</a>
+    <li><a href="./config_ru.html">config.ru</a>
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-label="Page README.md">
+
+<h1 id="label-Battleship+Game">Battleship Game<span><a href="#label-Battleship+Game">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>Welcome to the Battleship Game – a Sinatra-based web application that lets you play Battleship against an AI opponent.</p>
+
+<h2 id="label-Table+of+Contents">Table of Contents<span><a href="#label-Table+of+Contents">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p><a href="#overview">Overview</a></p>
+</li><li>
+<p><a href="#features">Features</a></p>
+</li><li>
+<p><a href="#how-to-play">How to Play</a></p>
+</li><li>
+<p><a href="#installation">Installation</a></p>
+</li><li>
+<p><a href="#dependencies">Dependencies</a></p>
+</li><li>
+<p><a href="#license">License</a></p>
+</li></ul>
+
+<h2 id="label-Overview">Overview<span><a href="#label-Overview">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>This Battleship Game is a web-based implementation of the classic game Battleship. The game includes a player grid and an AI grid, and the objective is to sink all the opponent’s ships before they sink yours.</p>
+
+<p>The project is implemented using Ruby with the Sinatra framework and features a modular structure with different components for the game logic, AI opponent, and graphical user interface.</p>
+
+<h2 id="label-Features">Features<span><a href="#label-Features">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p><strong>Web-based Gameplay</strong>: Play Battleship directly from your web browser.</p>
+</li><li>
+<p><strong>AI Opponent</strong>: Face off against an intelligent AI opponent that strategically plans its shots.</p>
+</li><li>
+<p><strong>Modular Design</strong>: The project is organized into separate modules for game logic, AI, and the user interface.</p>
+</li><li>
+<p><strong>Random Ship Generator</strong>: Ships are randomly generated, providing a unique game experience.</p>
+</li></ul>
+
+<h2 id="label-How+to+Play">How to Play<span><a href="#label-How+to+Play">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ol><li>
+<p><strong>Setup</strong>: The game initializes with both the player and AI grids, each containing randomly placed ships.</p>
+</li><li>
+<p><strong>Gameplay</strong>: Players take turns shooting at positions on the opponent’s grid. The AI opponent responds with its strategic shots.</p>
+</li><li>
+<p><strong>Winning</strong>: The game continues until one player sinks all the opponent’s ships. The player or AI with the remaining ships wins.</p>
+</li></ol>
+
+<h2 id="label-Installation">Installation<span><a href="#label-Installation">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ol><li>
+<p>Clone the repository:</p>
+
+<p>“‘Bash</p>
+</li></ol>
+
+<p> git clone <a href="https://github.com/yourusername/battleship-game.git">github.com/yourusername/battleship-game.git</a></p>
+
+<pre class="ruby">
+<span class="ruby-comment">### Web Version (Sinatra)</span>
+
+<span class="ruby-value">2</span>. <span class="ruby-constant">Install</span> <span class="ruby-keyword">and</span> <span class="ruby-constant">Configure</span> <span class="ruby-value">Nginx:</span>
+</pre>
+
+<p>Bash sudo apt-get install nginx</p>
+
+<pre>3. Edit Nginx configuration (e.g., /etc/nginx/sites-available/battleship-game):</pre>
+
+<p>server { listen 80; server_name yourdomain.com;</p>
+
+<pre>location / {
+    proxy_pass http://127.0.0.1:8080; # Unicorn address
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+}</pre>
+
+<p>}</p>
+
+<pre>4. Create a symbolic link to sites-enabled:</pre>
+
+<p>Bash sudo ln -s /etc/nginx/sites-available/battleship-game /etc/nginx/sites-enabled</p>
+
+<pre class="ruby"><span class="ruby-value">5</span>. <span class="ruby-constant">Restart</span> <span class="ruby-identifier">nginx</span>
+</pre>
+
+<p>Bash sudo service nginx restart “‘</p>
+
+<h3 id="label-Desktop+Version+-28Tkinter-29">Desktop Version (Tkinter)<span><a href="#label-Desktop+Version+-28Tkinter-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ol><li>
+<p>Run the Game.rb <code>Bash   ruby game.rb </code></p>
+</li></ol>
+
+<h1 id="label-Dependencies">Dependencies<span><a href="#label-Dependencies">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<h2 id="label-Web+Version+-28Sinatra-29">Web Version (Sinatra)<span><a href="#label-Web+Version+-28Sinatra-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p><a href="https://www.ruby-lang.org/en/">Ruby</a>: The programming language used for the web application.</p>
+</li><li>
+<p><a href="http://sinatrarb.com/">Sinatra</a>: A web application framework for Ruby.</p>
+</li><li>
+<p><a href="https://unicorn.bogomips.org/">Unicorn</a>: A HTTP server for Ruby applications.</p>
+</li><li>
+<p><a href="https://nginx.org/">Nginx</a>: A web server used as a reverse proxy.</p>
+</li></ul>
+
+<h2 id="label-Desktop+Version+-28Tkinter-29">Desktop Version (Tkinter)<span><a href="#label-Desktop+Version+-28Tkinter-29">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p><a href="https://www.ruby-lang.org/en/">Ruby</a>: The programming language used for the desktop application.</p>
+</li><li>
+<p><a href="https://docs.ruby-lang.org/en/2.7.0/Tk.html">Tk</a>: The Ruby interface to the Tk GUI toolkit.</p>
+</li></ul>
+
+<h1 id="label-License">License<span><a href="#label-License">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>This project is licensed under the <a href="LICENSE">MIT License</a>.</p>
+
+<h1 id="label-Contact">Contact<span><a href="#label-Contact">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>For inquiries or further information, please contact alex.xirou@hotmail.com</p>
+
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.6.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

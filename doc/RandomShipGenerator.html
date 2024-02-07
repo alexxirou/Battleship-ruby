@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module RandomShipGenerator - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/navigation.js" defer></script>
+<script src="./js/search.js" defer></script>
+<script src="./js/search_index.js" defer></script>
+<script src="./js/searcher.js" defer></script>
+<script src="./js/darkfish.js" defer></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search (/) for a class, method, ..." spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    
+<!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    <li ><a href="#method-c-build_ship_positions">::build_ship_positions</a>
+    <li ><a href="#method-c-generate_random_positions">::generate_random_positions</a>
+    <li ><a href="#method-c-positions_overlap-3F">::positions_overlap?</a>
+    <li ><a href="#method-c-random_ship_positions_array">::random_ship_positions_array</a>
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-RandomShipGenerator">
+  <h1 id="module-RandomShipGenerator" class="module">
+    module RandomShipGenerator
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  <section id="5Buntitled-5D" class="documentation-section">
+
+
+
+
+
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+      <div id="method-c-build_ship_positions" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">build_ship_positions</span><span
+              class="method-args">(ship_size, positions_array, row_length)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          <p>Builds ship positions for a given ship size, ensuring they do not overlap with existing positions.</p>
+
+<p>@param [Integer] ship_size The size of the ship. @param [Array&lt;Array&lt;Integer, Integer&gt;&gt;] positions_array The array of existing positions to avoid overlap. @param [Integer] row_length The length of each row in the grid. @return [Array&lt;Array&lt;Integer, Integer&gt;&gt;] An array of ship positions for a new ship.</p>
+
+          <div class="method-source-code" id="build_ship_positions-source">
+            <pre><span class="ruby-comment"># File RandomShipGenerator.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">build_ship_positions</span>(<span class="ruby-identifier">ship_size</span>, <span class="ruby-identifier">positions_array</span>, <span class="ruby-identifier">row_length</span>)
+  <span class="ruby-identifier">ship_position_range</span> = <span class="ruby-identifier">ship_size</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>
+  <span class="ruby-identifier">ship_random_positions</span> = <span class="ruby-identifier">generate_random_positions</span>(<span class="ruby-identifier">ship_position_range</span>, <span class="ruby-identifier">row_length</span>)
+
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">positions_overlap?</span>(<span class="ruby-identifier">ship_random_positions</span>, <span class="ruby-identifier">positions_array</span>)
+    <span class="ruby-identifier">ship_random_positions</span> = <span class="ruby-identifier">generate_random_positions</span>(<span class="ruby-identifier">ship_position_range</span>, <span class="ruby-identifier">row_length</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">ship_random_positions</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-c-generate_random_positions" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">generate_random_positions</span><span
+              class="method-args">(ship_position_range, row_length)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          <p>Generates random positions for a ship based on its size and orientation.</p>
+
+<p>@param [Integer] ship_position_range The range of positions for the ship. @param [Integer] row_length The length of each row in the grid. @return [Array&lt;Array&lt;Integer, Integer&gt;&gt;] An array of randomly generated ship positions.</p>
+
+          <div class="method-source-code" id="generate_random_positions-source">
+            <pre><span class="ruby-comment"># File RandomShipGenerator.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">generate_random_positions</span>(<span class="ruby-identifier">ship_position_range</span>, <span class="ruby-identifier">row_length</span>)
+  <span class="ruby-identifier">ship_random_positions</span> = []
+  <span class="ruby-identifier">ship_orientation</span> = [<span class="ruby-string">&quot;Vertical&quot;</span>, <span class="ruby-string">&quot;Horizontal&quot;</span>].<span class="ruby-identifier">sample</span>
+  <span class="ruby-identifier">coordinate_x</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-identifier">row_length</span>)
+  <span class="ruby-identifier">coordinate_y</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-identifier">row_length</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ship_orientation</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;Vertical&quot;</span>
+    <span class="ruby-identifier">direction</span> = <span class="ruby-identifier">coordinate_y</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ship_position_range</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">row_length</span> <span class="ruby-operator">?</span> <span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-value">-1</span>
+    (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">ship_position_range</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">ship_random_positions</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">coordinate_x</span>, <span class="ruby-identifier">coordinate_y</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">direction</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">direction</span> = <span class="ruby-identifier">coordinate_x</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ship_position_range</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">row_length</span> <span class="ruby-operator">?</span> <span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-value">-1</span>
+
+    (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">ship_position_range</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">ship_random_positions</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">coordinate_x</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">direction</span>, <span class="ruby-identifier">coordinate_y</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">ship_random_positions</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-c-positions_overlap-3F" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">positions_overlap?</span><span
+              class="method-args">(positions1, positions2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          <p>Checks if two sets of positions overlap.</p>
+
+<p>@param [Array&lt;Array&lt;Integer, Integer&gt;&gt;] positions1 The first set of positions. @param [Array&lt;Array&lt;Integer, Integer&gt;&gt;] positions2 The second set of positions. @return [Boolean] True if there is an overlap, false otherwise.</p>
+
+          <div class="method-source-code" id="positions_overlap-3F-source">
+            <pre><span class="ruby-comment"># File RandomShipGenerator.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">positions_overlap?</span>(<span class="ruby-identifier">positions1</span>, <span class="ruby-identifier">positions2</span>)
+  <span class="ruby-identifier">positions1</span>.<span class="ruby-identifier">any?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">element</span><span class="ruby-operator">|</span> <span class="ruby-identifier">positions2</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">element</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-c-random_ship_positions_array" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">random_ship_positions_array</span><span
+              class="method-args">(row_length)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          <p>Generates an array of random ship positions based on predefined ship classes.</p>
+
+<p>@param [Integer] row_length The length of each row in the grid. @return [Array&lt;Ship&gt;] An array of Ship objects with random positions.</p>
+
+          <div class="method-source-code" id="random_ship_positions_array-source">
+            <pre><span class="ruby-comment"># File RandomShipGenerator.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">random_ship_positions_array</span>(<span class="ruby-identifier">row_length</span>)
+  <span class="ruby-identifier">ships_array</span> = []
+  <span class="ruby-identifier">used_positions_array</span> = []
+
+  <span class="ruby-identifier">ships_classes</span> = [
+    { <span class="ruby-value">class_name:</span> <span class="ruby-string">&quot;Carrier&quot;</span>, <span class="ruby-value">size:</span> <span class="ruby-value">6</span> },
+    { <span class="ruby-value">class_name:</span> <span class="ruby-string">&quot;Battleship&quot;</span>, <span class="ruby-value">size:</span> <span class="ruby-value">5</span> },
+    { <span class="ruby-value">class_name:</span> <span class="ruby-string">&quot;Cruiser&quot;</span>, <span class="ruby-value">size:</span> <span class="ruby-value">4</span> },
+    { <span class="ruby-value">class_name:</span> <span class="ruby-string">&quot;Submarine&quot;</span>, <span class="ruby-value">size:</span> <span class="ruby-value">3</span> },
+    { <span class="ruby-value">class_name:</span> <span class="ruby-string">&quot;Destroyer&quot;</span>, <span class="ruby-value">size:</span> <span class="ruby-value">3</span> },
+    { <span class="ruby-value">class_name:</span> <span class="ruby-string">&quot;Patrol Boat&quot;</span>, <span class="ruby-value">size:</span> <span class="ruby-value">2</span> },
+  ]
+
+  <span class="ruby-identifier">num_ships_to_sample</span> = <span class="ruby-value">4</span>
+  <span class="ruby-identifier">random_sample</span> = <span class="ruby-identifier">ships_classes</span>.<span class="ruby-identifier">sample</span>(<span class="ruby-identifier">num_ships_to_sample</span>)
+
+  <span class="ruby-identifier">random_sample</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ship</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">ship_positions_array_for_new_ship</span> = <span class="ruby-identifier">build_ship_positions</span>(<span class="ruby-identifier">ship</span>[<span class="ruby-value">:size</span>], <span class="ruby-identifier">used_positions_array</span>, <span class="ruby-identifier">row_length</span>)
+    <span class="ruby-identifier">ships_array</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">ship</span>[<span class="ruby-value">:class_name</span>], <span class="ruby-identifier">ship_positions_array_for_new_ship</span>]
+    <span class="ruby-identifier">ship_positions_array_for_new_ship</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">position</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">used_positions_array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">position</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">ships_array</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.6.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
