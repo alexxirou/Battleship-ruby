@@ -69,7 +69,7 @@ The project is implemented using Ruby with the Sinatra framework and features a 
 ### Desktop Version (Tkinter) 
 
 
-6.install tk gem and dependencies
+6. install tk gem and dependencies
 
 ```bash
    sudo apt install tk-dev
@@ -84,7 +84,7 @@ The project is implemented using Ruby with the Sinatra framework and features a 
    --enable-pthread
    ```
 
-7.Run the Game.rb
+7. Run the Game.rb
 ```Bash
    ruby game.rb
 ```
