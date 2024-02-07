@@ -2,13 +2,8 @@ require 'minitest/autorun'
 require 'set'
 require 'json'
 require_relative '../Model'
-require_relative '../OpponentLogic'
 require_relative '../RandomShipGenerator'
 
-
-require 'minitest/autorun'
-require 'set'
-require_relative '../Model'
 
 class ModelTest < Minitest::Test
   def setup
@@ -114,4 +109,46 @@ class ModelTest < Minitest::Test
   
 
   # Add tests for other methods as needed
+end
+
+
+class RandomShipGeneratorTest < Minitest::Test
+  def setup
+    @row_length = 10  # Sample row length for testing
+  end
+
+  def test_random_ship_positions_array
+    # Test that the generated ship positions array has the correct length
+    assert_equal 4, RandomShipGenerator.random_ship_positions_array(@row_length).size
+  end
+
+  def test_build_ship_positions
+    positions_array = [[1, 1], [2, 2], [3, 3]]  # Sample existing positions array
+    ship_positions = RandomShipGenerator.build_ship_positions(4, positions_array, @row_length)
+
+    # Test that the generated ship positions do not overlap with existing positions
+    refute RandomShipGenerator.positions_overlap?(ship_positions, positions_array)
+  end
+
+  def test_generate_random_positions
+    ship_random_positions = RandomShipGenerator.generate_random_positions(3, @row_length)
+
+    # Test that the generated ship positions have the correct length
+    assert_equal 4, ship_random_positions.size
+
+    # Test that all positions are within the grid boundaries
+    assert ship_random_positions.all? { |pos| pos.all? { |coord| coord.between?(0, @row_length - 1) } }
+  end
+
+  def test_positions_overlap
+    positions1 = [[1, 1], [2, 2], [3, 3]]
+    positions2 = [[4, 4], [5, 5], [3, 3]]  # Overlaps with positions1
+    positions3 = [[6, 6], [7, 7], [8, 8]]  # No overlap with positions1
+
+    # Test that positions1 overlaps with positions2
+    assert RandomShipGenerator.positions_overlap?(positions1, positions2)
+
+    # Test that positions1 does not overlap with positions3
+    refute RandomShipGenerator.positions_overlap?(positions1, positions3)
+  end
 end
