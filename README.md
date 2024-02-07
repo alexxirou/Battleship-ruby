@@ -68,10 +68,26 @@ The project is implemented using Ruby with the Sinatra framework and features a 
   ``` 
 ### Desktop Version (Tkinter) 
 
-6. Run the Game.rb
- ```Bash
-   ruby game.rb
+
+6.install tk gem and dependencies
+
+```bash
+   sudo apt install tk-dev
+```
+
+```bash
+   gem install tk -- --with-tcltkversion=8.6 \
+   --with-tcl-lib=/usr/lib/x86_64-linux-gnu \
+   --with-tk-lib=/usr/lib/x86_64-linux-gnu \
+   --with-tcl-include=/usr/include/tcl8.6 \
+   --with-tk-include=/usr/include/tcl8.6 \
+   --enable-pthread
    ```
+
+   Run the Game.rb
+    ```Bash
+      ruby game.rb
+      ```
 
 # Dependencies
 
