@@ -4,7 +4,6 @@ require 'json'
 require_relative '../Model'
 require_relative '../RandomShipGenerator'
 
-
 class ModelTest < Minitest::Test
   def setup
     @grid1 = Model.load_grid_from_file('grid1.grd')
@@ -31,7 +30,6 @@ class ModelTest < Minitest::Test
     refute ship1.ship_afloat?
   end
 
-
   def test_grid
     assert_equal(
       {
@@ -40,115 +38,95 @@ class ModelTest < Minitest::Test
         ships: [],
         misses: Set.new
       }.to_json,
-  
+
       {
         size_x: @grid1.size_x,
         size_y: @grid1.size_y,
-        ships: @grid1.ships, # Convert ships to JSON-compatible format
-        misses: @grid1.misses # Convert Set to Array for JSON compatibility
+        ships: @grid1.ships,
+        misses: @grid1.misses
       }.to_json
     )
-  
+
     assert_equal(
       {
         size_x: 10,
         size_y: 10,
-        ships: @grid2.ships, # Convert ships to JSON-compatible format
+        ships: @grid2.ships,
         misses: Set.new
       }.to_json,
-  
+
       {
         size_x: @grid2.size_x,
         size_y: @grid2.size_y,
-        ships: @grid2.ships, # Convert ships to JSON-compatible format
+        ships: @grid2.ships,
         misses: Set.new
       }.to_json
     )
   end
-  
+
   def test_shoot_at_position_miss
     grid = Model::Grid.new(size_x: 5, size_y: 5, ships: [])
     result = grid.shoot_at_position([1, 1])
     assert_equal(["MISS"], result)
   end
-  
+
   def test_shoot_at_position_hit
     grid = Model::Grid.new(size_x: 5, size_y: 5, ships: [["Ship", Set[[1, 1],[2, 2]]]])
     result = grid.shoot_at_position([1, 1])
     assert_equal(["HIT"], result)
   end
-  
+
   def test_shoot_at_position_destroyed
     grid = Model::Grid.new(size_x: 5, size_y: 5, ships: [["Ship", Set[[1, 1]]]])
     grid.shoot_at_position([1, 1])
     result = grid.shoot_at_position([1, 1])
     assert_equal(["DESTROYED", "Ship"], result)
   end
-  
+
   def test_shoot_at_position_already_missed
     grid = Model::Grid.new(size_x: 5, size_y: 5, ships: [], misses: Set[[1, 1]])
     result = grid.shoot_at_position([1, 1])
     assert_equal(["MISS"], result)
   end
-  
-  
+
   def test_ship_afloat
-    # Create a grid with a ship at position [3, 3]
     grid = Model::Grid.new(size_x: 5, size_y: 5, ships: [["Ship", Set[[3, 3]]]])
-  
-    # Ensure ship is initially afloat
     assert_equal(true, grid.ships[0].ship_afloat?)
-  
-    # Shoot at the ship's position
     grid.shoot_at_position([3, 3])
-  
-    # Ensure ship is no longer afloat after being hit
     assert_equal(false, grid.ships[0].ship_afloat?)
   end
-  
-  
-
-  # Add tests for other methods as needed
 end
-
 
 class RandomShipGeneratorTest < Minitest::Test
   def setup
-    @row_length = 10  # Sample row length for testing
+    @row_length = 10
+  end
+
+  def teardown
+    @row_length = nil
   end
 
   def test_random_ship_positions_array
-    # Test that the generated ship positions array has the correct length
     assert_equal 4, RandomShipGenerator.random_ship_positions_array(@row_length).size
   end
 
   def test_build_ship_positions
-    positions_array = [[1, 1], [2, 2], [3, 3]]  # Sample existing positions array
+    positions_array = [[1, 1], [2, 2], [3, 3]]
     ship_positions = RandomShipGenerator.build_ship_positions(4, positions_array, @row_length)
-
-    # Test that the generated ship positions do not overlap with existing positions
     refute RandomShipGenerator.positions_overlap?(ship_positions, positions_array)
   end
 
   def test_generate_random_positions
     ship_random_positions = RandomShipGenerator.generate_random_positions(3, @row_length)
-
-    # Test that the generated ship positions have the correct length
     assert_equal 4, ship_random_positions.size
-
-    # Test that all positions are within the grid boundaries
     assert ship_random_positions.all? { |pos| pos.all? { |coord| coord.between?(0, @row_length - 1) } }
   end
 
   def test_positions_overlap
     positions1 = [[1, 1], [2, 2], [3, 3]]
-    positions2 = [[4, 4], [5, 5], [3, 3]]  # Overlaps with positions1
-    positions3 = [[6, 6], [7, 7], [8, 8]]  # No overlap with positions1
-
-    # Test that positions1 overlaps with positions2
+    positions2 = [[4, 4], [5, 5], [3, 3]]
+    positions3 = [[6, 6], [7, 7], [8, 8]]
     assert RandomShipGenerator.positions_overlap?(positions1, positions2)
-
-    # Test that positions1 does not overlap with positions3
     refute RandomShipGenerator.positions_overlap?(positions1, positions3)
   end
 end
