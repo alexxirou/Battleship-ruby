@@ -155,13 +155,15 @@ module Model
     end
   end
 
-  # Loads a grid from a file containing grid dimensions and ship data.
-  #
-  # @param [String] file The path to the file containing grid dimensions and ship data.
-  # @return [Grid] The grid loaded from the file.
-  def load_grid_from_file(file)
-    dimensions_x_y = []
-    ships_array = []
+ # Loads a grid from a file containing grid dimensions and ship data.
+#
+# @param [String] file The path to the file containing grid dimensions and ship data.
+# @return [Grid] The grid loaded from the file.
+def load_grid_from_file(file)
+  dimensions_x_y = []
+  ships_array = []
+
+  begin
     File.foreach(file).with_index do |line, line_number|
       if line_number == 0
         dimensions_x_y = line.chomp.strip.split(":").flatten
@@ -169,7 +171,11 @@ module Model
       ships_array << add_ships_from_data_source(line) if line_number >= 1
     end
     Grid.new(dimensions_x_y[0].to_i, dimensions_x_y[1].to_i, ships_array)
+  ensure
+    file.close if file # Close the file if it's open
   end
+end
+
 
   # Adds ships to the grid based on data from a data source (e.g., file).
   #
