@@ -14,7 +14,7 @@ module OpponentLogic
     # @param [Grid] grid The current state of the grid.
     # @return [Array<Integer, Integer>] The target position for the next shot.
     def next_shot(grid)
-      target_position = highest_probability_position(grid)
+      target_position = send(:highest_probability_position, grid)
       target_position
     end
 
@@ -25,7 +25,7 @@ module OpponentLogic
     # @param [Grid] grid The current state of the grid.
     def record_shot(shot, result, grid)
       if result == "HIT" || result == "DESTROYED"
-        update_ship_orientation(shot, grid)
+        send(:update_ship_orientation, shot, grid)
         @last_hit_position = shot
         @grid_hits.add(shot)
       end
@@ -39,9 +39,9 @@ module OpponentLogic
     # @return [Array<Integer, Integer>] The target position for the next shot.
     def highest_probability_position(grid)
       hits = @grid_hits
-      adjacent_shot = target_around_last_hit(grid)
+      adjacent_shot = send(:target_around_last_hit, grid)
 
-      return adjacent_shot || random_position(grid)
+      return adjacent_shot || send(:random_position, grid)
     end
 
     # Generates a random position on the grid.

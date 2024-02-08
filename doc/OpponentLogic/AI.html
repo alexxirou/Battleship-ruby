@@ -150,7 +150,7 @@
           <div class="method-source-code" id="next_shot-source">
             <pre><span class="ruby-comment"># File OpponentLogic.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">next_shot</span>(<span class="ruby-identifier">grid</span>)
-  <span class="ruby-identifier">target_position</span> = <span class="ruby-identifier">highest_probability_position</span>(<span class="ruby-identifier">grid</span>)
+  <span class="ruby-identifier">target_position</span> = <span class="ruby-identifier">send</span>(<span class="ruby-value">:highest_probability_position</span>, <span class="ruby-identifier">grid</span>)
   <span class="ruby-identifier">target_position</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -177,7 +177,7 @@
             <pre><span class="ruby-comment"># File OpponentLogic.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">record_shot</span>(<span class="ruby-identifier">shot</span>, <span class="ruby-identifier">result</span>, <span class="ruby-identifier">grid</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;HIT&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;DESTROYED&quot;</span>
-    <span class="ruby-identifier">update_ship_orientation</span>(<span class="ruby-identifier">shot</span>, <span class="ruby-identifier">grid</span>)
+    <span class="ruby-identifier">send</span>(<span class="ruby-value">:update_ship_orientation</span>, <span class="ruby-identifier">shot</span>, <span class="ruby-identifier">grid</span>)
     <span class="ruby-ivar">@last_hit_position</span> = <span class="ruby-identifier">shot</span>
     <span class="ruby-ivar">@grid_hits</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">shot</span>)
   <span class="ruby-keyword">end</span>
